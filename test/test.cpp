@@ -6,18 +6,18 @@
 //调用动态库头文件，导入，不叫导出
 #include "../testDll/pch.h"
 /* 这个不是真正的静态库，只是提供一些导出函数,隐式调用动态库 */
-/* #pragma comment(lib,"testdll.lib") */
+#pragma comment(lib,"testdll.lib")
 
-typedef int(*PADD)(int a, int b);
+//typedef int(*PADD)(int a, int b);
 
 int main()
 {
 	//加载动态库,显式调用动态库，需要时用，不需要时卸载
-	HMODULE hDll = LoadLibrary(L"../Debug/testDll.dll");
+	/*HMODULE hDll = LoadLibrary(L"../Debug/testDll.dll");
 	if (hDll == NULL) {
 		std::cout << "加载DLL文件失败！" << std::endl;
 		return 0;
-	}
+	}*/
 
 	int a, b;
 	std::cout << "请输入两个整数：";
@@ -26,10 +26,10 @@ int main()
 	/* ?add@@YAHHH@Z 为什么要用这个，因为使用c++语法，c++语法会将我们导出的函数名称改变为动态库的名称
 	使用c语言导出就是正确的
 	为了防止编译器把导出的接口改名字，如果一定要使用c++，加个关键字extern */
-	PADD pAdd = (PADD)GetProcAddress(hDll, "add");  /*返回函数指针*/
-	std::cout << "add(a,b)=" << pAdd(a, b) << std::endl;
+	//PADD pAdd = (PADD)GetProcAddress(hDll, "add");  /*返回函数指针*/
+	std::cout << "add(a,b)=" << add(a, b) << std::endl;
 
-	FreeLibrary(hDll);
+	//FreeLibrary(hDll);
     std::cout << "Hello World!\n";
 }
 
